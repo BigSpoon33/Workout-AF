@@ -1,201 +1,124 @@
-# Glo* Component Library
+# Workout AF
 
-A themed, mobile-friendly component library for Obsidian DatacoreJSX.
+A workout planning and exercise tracking system for Obsidian, built with DatacoreJSX components.
 
 ## Features
 
-- **16 UI Components** - Buttons, toggles, progress bars, cards, inputs, selects, tabs, badges, dials, and more
-- **Theme System** - Complete theme management with live preview and editing
-- **Mobile-First** - All components optimized for touch with 44px minimum targets
-- **Effects** - Glow, lift, press, and rainbow effects
-- **Frontmatter Binding** - Components can read/write to note frontmatter
-- **Gradient Utilities** - Preset gradients and builder functions
+- **Exercise Library** - Store exercises with form cues, variations, and progress tracking
+- **Workout Builder** - Create custom workout plans from your exercise library
+- **Weekly Planner** - Schedule workout plans across your week
+- **Muscle Map** - Visual anatomy reference showing target muscles
+- **Mobile-Friendly** - Touch-optimized components for gym use
 
-## Components
+## Workflow
 
-| Component | Description |
-|-----------|-------------|
-| **GloButton** | Versatile button with effects, icons, and sprites |
-| **GloToggle** | Toggle switch with labels and animations |
-| **GloBar** | Progress bar with draggable sprite |
-| **GloCard** | Container with header, footer, and variants |
-| **GloInput** | Text input with validation and frontmatter binding |
-| **GloSelect** | Dropdown with search and multi-select |
-| **GloTabs** | Tab navigation with multiple styles |
-| **GloBadge** | Status badges and removable tags |
-| **GloDial** | Circular dial for time/angle/percentage |
-| **ColorPicker** | HSV color picker with presets |
-| **GradientBuilder** | Visual gradient editor |
-| **BackgroundPicker** | Combined color/gradient/image picker |
-| **CalendarPicker** | Date selection widget |
+### 1. Add Exercises
 
-## Quick Start
+**Option A: Web Clipper**
+Use the Obsidian Web Clipper to save exercises from fitness sites. The clipper captures exercise details automatically.
 
-1. Install the **Datacore** plugin in Obsidian
-2. Copy this vault or the `System/Scripts` folder to your vault
-3. Open `System/Dashboards/Component-Showcase.md`
+**Option B: Manual Entry**
+Create a new note using the Exercise Template (`System/Templates/Exercise Template.md`).
 
-## Usage
-
-```javascript
-// Import a component
-const { GloButton } = await dc.require(
-    dc.fileLink("System/Scripts/Components/dc-gloButton.jsx")
-);
-
-// Use it in your datacorejsx block
-<GloButton
-    label="Click Me"
-    icon="🎉"
-    onClick={() => new Notice('Clicked!')}
-/>
+**Exercise Frontmatter:**
+```yaml
+categories:
+  - "[[Exercise]]"
+type: [strength, compound]
+target: [chest, triceps, shoulders]
+equipment: [barbell, bench]
+duration:
+sets: 4
+reps: 8
+weight: 135
+rating: 5
+created: 2026-01-14
+last:
 ```
 
-## Theme System
+### 2. Build Workout Plans
 
-The Theme Studio provides complete theme management:
+Create workout plans by combining exercises:
 
-```javascript
-// Include the Theme Studio widget
-await dc.require(dc.fileLink("System/Scripts/Widgets/dc-themeStudio.jsx"))
+1. Create a new note from the Workout-Plan Template
+2. Add exercises to your plan
+3. Set target sets, reps, and rest periods
+4. Use the **Workout Builder** widget to organize exercises
+
+### 3. Schedule Your Week
+
+Open the **Exercise Planner** (`System/Planners/Exercise Planner.md`):
+
+- Assign workout plans to each day of the week
+- View your weekly training schedule at a glance
+- Frontmatter stores your schedule:
+
+```yaml
+schedule-monday: "[[Push Day]]"
+schedule-tuesday: "[[Legs]]"
+schedule-wednesday:
+schedule-thursday: "[[Pull Day]]"
+schedule-friday: "[[Push Day]]"
+schedule-saturday: "[[Legs]]"
+schedule-sunday:
 ```
 
-or as a codeblock
+### 4. Track Progress
 
-```markdown
-```datacorejsx
-const scriptPath = "System/Scripts/Widgets/dc-themeStudio.jsx";
-const target = dc.fileLink(scriptPath);
-const result = await dc.require(target);
-const view = result?.renderedView ?? result?.View ?? result;  
-const Func = result?.Func ?? null;
-
-return function View() {
-    const currentFile = dc.useCurrentFile();
-    if (Func) {
-        return Func({ currentFile, scriptPath });
-    }
-    return view ?? <p>Failed to render</p>;
-}
-```
-
-Create custom themes with the Theme Studio
+Each exercise note tracks:
+- **Last performed** - When you last did this exercise
+- **Weight** - Current working weight
+- **Sets/Reps** - Your current programming
+- **Notes** - Personal observations and modifications
 
 ## Folder Structure
 
 ```
-System/
-├── Scripts/
-│   ├── Core/           # Theme provider and utilities
-│   ├── Components/     # All UI components
-│   └── Widgets/        # Theme Studio and dashboard widgets
-├── Themes/             # Theme files and templates
-└── Dashboards/         # Component showcase
+Workout AF/
+├── System/
+│   ├── Assets/
+│   │   └── Anatomy/     # Muscle map SVGs and data
+│   ├── Categories/      # Exercise, Workout Plan
+│   ├── Dashboards/      # Component showcase
+│   ├── Planners/        # Weekly Exercise Planner
+│   ├── Scripts/
+│   │   ├── Components/  # UI components
+│   │   ├── Core/        # Theme and utilities
+│   │   └── Widgets/     # Workout-specific widgets
+│   │       ├── dc-muscleMap.jsx
+│   │       ├── dc-weeklyWorkout.jsx
+│   │       ├── dc-workoutBuilder.jsx
+│   │       └── dc-workoutToday.jsx
+│   ├── Templates/
+│   │   ├── Bases/       # Obsidian Bases views
+│   │   ├── Exercise Template.md
+│   │   └── Workout-Plan Template.md
+│   ├── Themes/          # UI themes
+│   ├── Workout Plans/   # Saved workout plans
+│   └── Settings.md
+├── Examples/            # Example exercises
+└── README.md
 ```
 
 ## Requirements
 
 - Obsidian v1.0+
 - Datacore plugin
-- Minimal Theme by Kepano
-- Minimal Theme Settings
-- Style Settings
+- Minimal Theme by Kepano (recommended)
+- Style Settings plugin (for theme customization)
 
-## Showcase
+## Quick Start
 
-### Default Themes
-
-#### Theme Studio
-![Theme Studio With Basic Theme](Assets/ThemeStudio.png)
-
----
-
-#### Bars
-![Bars With Basic Theme](Assets/Bars.png)
-
----
-
-#### Toggles
-![Toggles With Basic Theme](Assets/Toggles.png)
-
----
-
-#### Buttons
-![Buttons With Basic Theme](Assets/Buttons.png)
-
----
-
-#### Selects
-![Selects With Basic Theme](Assets/Selects.png)
-
----
-
-#### Inputs
-![Inputs With Basic Theme](Assets/Inputs.png)
-
----
-
-#### Cards
-![Cards With Basic Theme](Assets/Cards.png)
-
----
-
-#### Dials
-![Dials With Basic Theme](Assets/Dials.png)
-
----
-
-#### Badges
-![Badges With Basic Theme](Assets/Badges.png)
-
----
-
-#### Tabs
-![Tabs With Basic Theme](Assets/Tabs.png)
-
----
-
-#### Gradients
-![Gradients With Basic Theme](Assets/Gradients.png)
-
----
-
-#### Vertical Bars
-![VerticalBars With Basic Theme](Assets/VerticalBars.png)
-
----
-
-### Flashy Themes (DIY)
-
-#### Bars
-![Bars With Custom Theme](Assets/Bars.gif)
-
----
-
-#### Toggles
-![TogglesWith Custom Theme](Assets/Toggles.gif)
-
----
-
-#### Buttons
-![Buttons With Custom Theme](Assets/Buttons.gif)
-
----
-
-#### Selects and Inputs
-![Selects and Inputs With Custom Theme](Assets/SelectandInputs.gif)
-
----
-
-#### Switching Themes
-![Switching Themes With Custom Theme](Assets/ThemeSwitch.gif)
-
-
+1. Install required plugins (see INSTALLATION.md)
+2. Create exercises using the Exercise Template
+3. Build workout plans from your exercise library
+4. Schedule your week with the Exercise Planner
+5. Hit the gym!
 
 ## Credits
 
-Created by Rice AF (more like Potato AF)
+Part of the AF Vault Capsule series by Rice AF.
 
+---
 
-
-
+<a href='https://ko-fi.com/M4M11S2NNW' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
